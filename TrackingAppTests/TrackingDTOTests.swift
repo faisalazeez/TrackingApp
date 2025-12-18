@@ -10,7 +10,6 @@ import XCTest
 class TrackingDTOTests: XCTestCase {
     
     func testTrackingItemDTODecoding() throws {
-        // Given
         let json = """
         {
             "plateNo": "X 19599",
@@ -23,10 +22,8 @@ class TrackingDTOTests: XCTestCase {
         }
         """.data(using: .utf8)!
         
-        // When
         let dto = try JSONDecoder().decode(TrackingItemDTO.self, from: json)
         
-        // Then
         XCTAssertEqual(dto.plateNo, "X 19599")
         XCTAssertEqual(dto.driverName, "John Doe")
         XCTAssertEqual(dto.lat, 25.2048)
@@ -34,7 +31,6 @@ class TrackingDTOTests: XCTestCase {
     }
     
     func testTrackingResponseDTODecoding() throws {
-        // Given - API returns direct array
         let json = """
         [
             {
@@ -49,16 +45,13 @@ class TrackingDTOTests: XCTestCase {
         ]
         """.data(using: .utf8)!
         
-        // When
         let response = try JSONDecoder().decode(TrackingResponseDTO.self, from: json)
         
-        // Then
         XCTAssertEqual(response.count, 1)
         XCTAssertEqual(response[0].plateNo, "X 19599")
     }
     
     func testTrackingItemDTOToDomainConversion() {
-        // Given
         let dto = TrackingItemDTO(
             plateNo: "X 19599",
             driverName: "John Doe",
@@ -69,10 +62,8 @@ class TrackingDTOTests: XCTestCase {
             lastUpdated: "2024-12-14T10:30:00.000Z"
         )
         
-        // When
         let domain = dto.toDomain()
         
-        // Then
         XCTAssertNotNil(domain)
         XCTAssertEqual(domain?.plateNo, "X 19599")
         XCTAssertEqual(domain?.driverName, "John Doe")
@@ -81,7 +72,6 @@ class TrackingDTOTests: XCTestCase {
     }
     
     func testTrackingItemDTOWithInvalidDate() {
-        // Given
         let dto = TrackingItemDTO(
             plateNo: "X 19599",
             driverName: "John Doe",
@@ -92,10 +82,8 @@ class TrackingDTOTests: XCTestCase {
             lastUpdated: "invalid-date"
         )
         
-        // When
         let domain = dto.toDomain()
         
-        // Then
         XCTAssertNil(domain, "Should return nil for invalid date format")
     }
 }

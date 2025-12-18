@@ -11,7 +11,6 @@ import Combine
 class DefaultTrackingRepositoryTests: XCTestCase {
     
     func testFetchTrackingDataSuccess() async throws {
-        // Given
         let mockNetworkService = MockNetworkService()
         let repository = DefaultTrackingRepository(networkService: mockNetworkService)
         
@@ -27,26 +26,21 @@ class DefaultTrackingRepositoryTests: XCTestCase {
         
         mockNetworkService.mockResponse = [dto]
         
-        // When
         let items = try await repository.fetchTrackingData()
         
-        // Then
         XCTAssertEqual(items.count, 1)
         XCTAssertEqual(items[0].plateNo, "X 19599")
     }
     
     func testFetchTrackingDataError() async {
-        // Given
         let mockNetworkService = MockNetworkService()
         mockNetworkService.shouldFail = true
         let repository = DefaultTrackingRepository(networkService: mockNetworkService)
         
-        // When/Then
         do {
             _ = try await repository.fetchTrackingData()
             XCTFail("Expected error but got success")
         } catch {
-            // Success - error was thrown
             XCTAssertTrue(true)
         }
     }

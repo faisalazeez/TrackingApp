@@ -11,7 +11,6 @@ import Combine
 class FetchTrackingDataUseCaseTests: XCTestCase {
     
     func testExecuteReturnsSortedData() async throws {
-        // Given
         let mockRepository = MockTrackingRepository()
         let useCase = DefaultFetchTrackingDataUseCase(repository: mockRepository)
         
@@ -26,27 +25,22 @@ class FetchTrackingDataUseCaseTests: XCTestCase {
         ]
         mockRepository.mockItems = items
         
-        // When
         let result = try await useCase.execute()
         
-        // Then - Should be sorted by lastUpdated (most recent first)
         XCTAssertEqual(result.count, 2)
         XCTAssertEqual(result[0].id, "2") // Most recent
         XCTAssertEqual(result[1].id, "1")
     }
     
     func testExecuteHandlesError() async {
-        // Given
         let mockRepository = MockTrackingRepository()
         mockRepository.shouldFail = true
         let useCase = DefaultFetchTrackingDataUseCase(repository: mockRepository)
         
-        // When/Then
         do {
             _ = try await useCase.execute()
             XCTFail("Expected error but got success")
         } catch {
-            // Success - error was thrown
             XCTAssertTrue(true)
         }
     }

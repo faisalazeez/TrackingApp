@@ -12,7 +12,6 @@ import Combine
 class TrackingViewModelTests: XCTestCase {
     
     func testLoadDataSuccess() async {
-        // Given
         let mockUseCase = MockFetchTrackingDataUseCase()
         let viewModel = TrackingViewModel(fetchTrackingDataUseCase: mockUseCase)
         
@@ -22,18 +21,15 @@ class TrackingViewModelTests: XCTestCase {
         ]
         mockUseCase.mockItems = items
         
-        // When
         viewModel.loadData()
         try? await Task.sleep(nanoseconds: 100_000_000)
         
-        // Then
         XCTAssertFalse(viewModel.isLoading)
         XCTAssertEqual(viewModel.trackingItems.count, 2)
         XCTAssertNil(viewModel.errorMessage)
     }
     
     func testSearchFiltering() async {
-        // Given
         let mockUseCase = MockFetchTrackingDataUseCase()
         let viewModel = TrackingViewModel(fetchTrackingDataUseCase: mockUseCase)
         
@@ -46,17 +42,14 @@ class TrackingViewModelTests: XCTestCase {
         viewModel.loadData()
         try? await Task.sleep(nanoseconds: 100_000_000)
         
-        // When
         viewModel.searchText = "19599"
         try? await Task.sleep(nanoseconds: 400_000_000)
         
-        // Then
         XCTAssertEqual(viewModel.filteredItems.count, 1)
         XCTAssertEqual(viewModel.filteredItems[0].plateNo, "X 19599")
     }
     
     func testToggleSort() async {
-        // Given
         let mockUseCase = MockFetchTrackingDataUseCase()
         let viewModel = TrackingViewModel(fetchTrackingDataUseCase: mockUseCase)
         
@@ -69,13 +62,10 @@ class TrackingViewModelTests: XCTestCase {
         viewModel.loadData()
         try? await Task.sleep(nanoseconds: 100_000_000)
         
-        // Initially sorted descending (most recent first)
         XCTAssertEqual(viewModel.filteredItems[0].id, "2")
         
-        // When
         viewModel.toggleSort()
         
-        // Then - Should be ascending (oldest first)
         XCTAssertTrue(viewModel.sortAscending)
         XCTAssertEqual(viewModel.filteredItems[0].id, "1")
     }

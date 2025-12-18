@@ -11,14 +11,12 @@ import CoreLocation
 class TrackingItemTests: XCTestCase {
     
     func testTrackingItemInitialization() {
-        // Given
         let id = "123"
         let plateNo = "X 19599"
         let driverName = "John Doe"
         let location = "Rolla, Sharjah, UAE"
         let lastUpdated = Date()
         
-        // When
         let item = TrackingItem(
             id: id,
             plateNo: plateNo,
@@ -30,7 +28,6 @@ class TrackingItemTests: XCTestCase {
             driverImageURL: nil
         )
         
-        // Then
         XCTAssertEqual(item.id, id)
         XCTAssertEqual(item.plateNo, plateNo)
         XCTAssertEqual(item.driverName, driverName)
@@ -38,7 +35,6 @@ class TrackingItemTests: XCTestCase {
     }
     
     func testCoordinateProperty() {
-        // Given
         let item = TrackingItem(
             id: "1",
             plateNo: "X 19599",
@@ -50,16 +46,13 @@ class TrackingItemTests: XCTestCase {
             driverImageURL: nil
         )
         
-        // When
         let coordinate = item.coordinate
         
-        // Then
         XCTAssertEqual(coordinate.latitude, 25.2048)
         XCTAssertEqual(coordinate.longitude, 55.2708)
     }
     
     func testLastUpdatedFormatting() {
-        // Given - Today
         let todayItem = TrackingItem(
             id: "1",
             plateNo: "X 19599",
@@ -71,10 +64,8 @@ class TrackingItemTests: XCTestCase {
             driverImageURL: nil
         )
         
-        // Then
         XCTAssertEqual(todayItem.lastUpdatedFormatted, "Today")
         
-        // Given - One day ago
         let oneDayAgo = Calendar.current.date(byAdding: .day, value: -1, to: Date())!
         let yesterdayItem = TrackingItem(
             id: "2",
@@ -87,7 +78,6 @@ class TrackingItemTests: XCTestCase {
             driverImageURL: nil
         )
         
-        // Then
         XCTAssertEqual(yesterdayItem.lastUpdatedFormatted, "1 day ago")
     }
 }
